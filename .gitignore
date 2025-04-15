@@ -1,0 +1,6 @@
+/dist/
+/src/*.egg-info/
+/src/*.pyc
+/build/
+/src/ducumentation/
+/hg2_assessments.png

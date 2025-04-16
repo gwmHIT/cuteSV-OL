@@ -52,6 +52,10 @@ def parseArgs(argv):
 		type = str, 
 		help = "high frequence SV file or user-defined recall set[vcf]",
         default = "")
+    parser.add_argument('--target_set', 
+		type = str, 
+		help = "high frequence SV file or user-defined recall set[vcf]",
+        default = "")
     parser.add_argument('--user_defined',
         action = 'store_true',
         help = 'The recall set[vcf] is user-defined')
@@ -376,7 +380,7 @@ def main_function():
     if not args.work_dir.endswith('/'):
         args.work_dir += '/'
     task_queue = multiprocessing.Queue()
-
+    args.high_freq_file = args.target_set
     if not os.path.exists(f'{args.work_dir}debug.txt'):
         os.mkdir("%sbam"%args.work_dir)
         os.mkdir("%scutesv_work_dir"%args.work_dir)

@@ -1,4 +1,4 @@
-# cuteSV-OL
+# cuteSV-OL:a real-time structural variation detection framework for nanopore sequencing devices
 
 ## Installation
 

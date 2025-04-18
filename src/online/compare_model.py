@@ -138,13 +138,13 @@ def compare_vcf_highfreq_mapping(vcf_file, highfreq_file, output_file, af_thresh
                 # variants_with_match += 1
 
         detection_rate = (len(high_set) / total_hight_variants * 100) if total_hight_variants > 0 else 0
-        print("检出数: {}, 总高频变异数: {}, 检出率: {:.2f}%\n".format(len(high_set), total_hight_variants, detection_rate))
-        fout.write("检出数: {}, 总高频变异数: {}, 检出率: {:.2f}%\n".format(len(high_set), total_hight_variants, detection_rate))
+        print("Detection number: {}, Total high-frequency variance: {}, Detection rate: {:.2f}%\n".format(len(high_set), total_hight_variants, detection_rate))
+        fout.write("Detection number: {}, Total high-frequency variance: {}, Detection rate: {:.2f}%\n".format(len(high_set), total_hight_variants, detection_rate))
     return detection_rate
 
 if __name__ == '__main__':
     if len(sys.argv) != 5:
-        print("用法: {} <输入_vcf文件> <高频变异_vcf文件> <输出_mapping_txt文件> <高频变异频率>".format(sys.argv[0]))
+        print("用法: {} <input_vcf> <target_vcf> <result_txt> <af_threshold>".format(sys.argv[0]))
         sys.exit(1)
     input_vcf = sys.argv[1]
     highfreq_txt = sys.argv[2]

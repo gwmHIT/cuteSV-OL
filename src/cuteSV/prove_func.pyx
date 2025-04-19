@@ -1,6 +1,5 @@
 # your_cython_file.pyx
 import pysam
-cimport pysam
 from libc.stdlib cimport malloc, free
 cimport cython
 

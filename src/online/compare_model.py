@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 import sys
 import bisect
+import gzip
 
 def parse_info(info):
     """
@@ -15,6 +16,14 @@ def parse_info(info):
             info_dict[field] = True
     return info_dict
 
+
+def open_vcf_file(filename):
+    if filename.endswith(".gz"):
+        return gzip.open(filename, 'rt')  # 以文本模式读取.gz
+    else:
+        return open(filename, 'r')
+
+
 def load_highfreq_file(highfreq_file, af_threshold, mode):
     """
     读取高频变异 VCF 文件，或者自定义SV的 TXT 文件
@@ -24,7 +33,7 @@ def load_highfreq_file(highfreq_file, af_threshold, mode):
     total_hight_variants = 0
     highfreq = {}
 
-    with open(highfreq_file, 'r') as f:
+    with open_vcf_file(highfreq_file) as f:
         for line in f:
             if line.startswith('#'):
                     continue

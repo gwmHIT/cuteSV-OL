@@ -4,7 +4,7 @@
 
 **cuteSV-OL requires miniconda to create the runtime environment**
 
-```
+```bash
 git clone https://github.com/120L022331/cuteSV-OL.git && cd cuteSV-OL && conda env create -f environment.yml -n <your_env_name> && python setup.py build_ext --inplace && python setup.py install
 ```
 
@@ -51,11 +51,21 @@ cuteSV_ONLINE <monitored_dir> <reference.fa> <work_dir> <output_vcf_dir>
 
 If you are using a population SV dataset as ground truth and want to specify a threshold for high frequency variation, you can use the sv_freq parameter and use the following command to generate the AF field for the vcf file:
 
-```
-bcftools +fill-tags input.vcf -Ou -- -t AF | bcftools view -Oz -o output.vcf.gz
+```bash
+bcftools +fill-tags input.vcf -Ov -- -t AF -o output.vcf  # <vcf> format
+bcftools +fill-tags input.vcf.gz -Ou -- -t AF | bcftools view -Oz -o output.vcf.gz  # <vcf.gz> format
 ```
 
-If you are using a custom SV dataset as the ground truth, use the user_defined parameter, which will ensure that all SV will be the target to be detected
+If you are using a custom SV dataset as the ground truth, use the user_defined parameter, which will ensure that all SV will be the target to be detected.
+
+### Dataset
+
+| **Dataset**                         | **Link**                                                     |
+| ----------------------------------- | ------------------------------------------------------------ |
+| HG002 ONT fastq.gz                  | https://ftp-trace.ncbi.nlm.nih.gov/giab/ftp/data/AshkenazimTrio/HG002_NA24385_son/Ultralong_OxfordNanopore/guppy-V3.4.5/HG002_ONT-UL_GIAB_20200204.fastq.gz |
+| GRCH38  HG002 T2T data              | https://ftp-trace.ncbi.nlm.nih.gov/ReferenceSamples/giab/data/AshkenazimTrio/analysis/NIST_HG002_DraftBenchmark_defrabbV0.019-20241113/GRCh38_HG2-T2TQ100-V1.1_stvar.benchmark.bed  https://ftp-trace.ncbi.nlm.nih.gov/ReferenceSamples/giab/data/AshkenazimTrio/analysis/NIST_HG002_DraftBenchmark_defrabbV0.019-20241113/GRCh38_HG2-T2TQ100-V1.1_stvar.vcf.gz |
+| GRCH38  HGSVC population SV INS&DEL | https://ftp.1000genomes.ebi.ac.uk/vol1/ftp/data_collections/HGSVC3/release/Variant_Calls/1.0/GRCh38/variants_GRCh38_sv_insdel_sym_HGSVC2024v1.0.vcf.gz |
+| GRCH38 reference                    | https://www.ncbi.nlm.nih.gov/datasets/genome/GCF_000001405.26 |
 
 ### **An example**
 

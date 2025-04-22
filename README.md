@@ -67,6 +67,38 @@ If you are using a custom SV dataset as the ground truth, use the user_defined p
 | GRCH38  HGSVC population SV INS&DEL | https://ftp.1000genomes.ebi.ac.uk/vol1/ftp/data_collections/HGSVC3/release/Variant_Calls/1.0/GRCh38/variants_GRCh38_sv_insdel_sym_HGSVC2024v1.0.vcf.gz |
 | GRCH38 reference                    | https://www.ncbi.nlm.nih.gov/datasets/genome/GCF_000001405.26 |
 
+We use the following script to bench the output vcf file. it can be a little slow to refine the result. Truvari version is v5.1.1 .
+
+```bash
+#!/bin/bash
+truvari_dir=$1
+vcf_path=$2
+source /home/user/guoweimin/miniconda3/etc/profile.d/conda.sh
+rm -r /home/user/guoweimin/data/vcf_refine/$truvari_dir
+conda activate truvari_git
+export PATH="$PATH:/home/user/guoweimin/tools/mafft/bin" # a external tool mafft should be install.
+truvari bench \
+    --reference /home/user/guoweimin/data/standard_vcf/GRCh38_full_analysis_set_plus_decoy_hla.fa \
+    --includebed /home/user/guoweimin/data/standard_t2t_vcf/GRCh38_HG2-T2TQ100-V1.1_stvar.benchmark.bed \
+    --base /home/user/guoweimin/data/standard_t2t_vcf/GRCh38_HG2-T2TQ100-V1.1_stvar.vcf.gz \
+    --comp $vcf_path \
+    --output /home/user/guoweimin/data/vcf_refine/$truvari_dir \
+    --passonly \
+    --pick ac \
+    --refdist 2000 \
+    -C 6000 \
+    --dup-to-ins
+
+truvari refine \
+    --reference /home/user/guoweimin/data/standard_vcf/GRCh38_full_analysis_set_plus_decoy_hla.fa \
+    --regions /home/user/guoweimin/data/vcf_refine/$truvari_dir/candidate.refine.bed \
+    --use-original-vcfs \
+    --align mafft \
+    --mafft-params '--auto --thread 32' \
+    -t 32 \
+    /home/user/guoweimin/data/vcf_refine/$truvari_dir
+```
+
 ### **An example**
 
 ```bash

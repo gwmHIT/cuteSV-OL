@@ -11,7 +11,7 @@ git clone https://github.com/120L022331/cuteSV-OL.git && cd cuteSV-OL && conda e
 **you can also use conda to install**
 
 ```bash
-conda install cutesv-ol
+conda install -c conda-forge -c bioconda cutesv-ol
 ```
 
 ## Introduction

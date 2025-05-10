@@ -8,6 +8,12 @@
 git clone https://github.com/120L022331/cuteSV-OL.git && cd cuteSV-OL && conda env create -f environment.yml -n <your_env_name> && python setup.py build_ext --inplace && python setup.py install
 ```
 
+**you can also use conda to install**
+
+```bash
+conda install cutesv-ol
+```
+
 ## Introduction
 
 cuteSV-OL is a novel framework designed for real-time SV discovery, which can be embedded within nanopore sequencing instruments to analyze data concurrently with its generation.
@@ -26,6 +32,7 @@ scikit-learn    1.3.2
 Cython  3.0.11
 minimap2    2.28
 samtools    1.21
+watchdog	4.0.1
 ```
 
 ## Usage

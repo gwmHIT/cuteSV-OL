@@ -43,7 +43,7 @@ cuteSV_ONLINE <monitored_dir> <reference.fa> <work_dir> <output_vcf_dir>
 
 | Optional Parameter | Description                                                  | Default |
 | ------------------ | ------------------------------------------------------------ | ------- |
-| threads            | Number of threads to use.                                    | 8       |
+| threads            | Number of threads to use.                                    | 4       |
 | mmi_path           | The path of index of reference used in minimap2 to accelerate alignment. | NULL    |
 | monitor_fade       | Monitor will close if no new files are detected after monitor_fade second. | 600     |
 | target_set         | The path of high frequence SV file or user-defined target recall set[vcf] as the ground truth set. | NULL    |
@@ -127,17 +127,17 @@ export POP_FILE=~/data/HGSVC/GRCH38_HGSVC2024v1.0_insdel.vcf # a built-in popula
 export SV_FREQ=0.1 # Specify a high frequency variation threshold for the population to detect. Don't use it if use a self-defined target set as the ground truth.
 export PCTSIZE=0.9
 export REF_DIST=1000
-export TARGET_rATE=25
+export TARGET_RATE=25
 export BATCH_INTERVAL=4
 
 conda activate CONDAENV
-cuteSV_ONLINE $MONITORED_DIR $REFPATH $WORK_DIR $OUTPUTVCF --mmi_path $MMI-PATH --threads $THREADS --monitor_fade $MONITOR_FADE --target_set $POP_FILE --sv_freq $SV_FREQ --pctsize $PCTSIZE --ref_dist $REF_DIST --target_rate $TARGET_rATE --batch_interval $BATCH_INTERVAL
+cuteSV_ONLINE $MONITORED_DIR $REFPATH $WORK_DIR $OUTPUTVCF --mmi_path $MMI-PATH --threads $THREADS --monitor_fade $MONITOR_FADE --target_set $POP_FILE --sv_freq $SV_FREQ --pctsize $PCTSIZE --ref_dist $REF_DIST --target_rate $TARGET_RATE --batch_interval $BATCH_INTERVAL
 
 # full usage. Use a user-defined SV file as target recall set.
 export DEFINED_FILE=~/data/experiment/self_defined.vcf
 
 conda activate CONDAENV
-cuteSV_ONLINE $MONITORED_DIR $REFPATH $WORK_DIR $OUTPUTVCF --mmi_path $MMI-PATH --threads $THREADS --monitor_fade $MONITOR_FADE --target_set $DEFINED_FILE --user_defined --pctsize $PCTSIZE --ref_dist $REF_DIST --target_rate $TARGET_rATE --batch_interval $BATCH_INTERVAL
+cuteSV_ONLINE $MONITORED_DIR $REFPATH $WORK_DIR $OUTPUTVCF --mmi_path $MMI-PATH --threads $THREADS --monitor_fade $MONITOR_FADE --target_set $DEFINED_FILE --user_defined --pctsize $PCTSIZE --ref_dist $REF_DIST --target_rate $TARGET_RATE --batch_interval $BATCH_INTERVAL
 ```
 
 **output result:**

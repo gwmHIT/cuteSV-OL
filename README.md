@@ -47,7 +47,7 @@ cuteSV_ONLINE <monitored_dir> <reference.fa> <work_dir> <output_vcf_dir>
 | mmi_path           | The path of index of reference used in minimap2 to accelerate alignment. | NULL    |
 | monitor_fade       | Monitor will close if no new files are detected after monitor_fade second. | 600     |
 | target_set         | The path of high frequence SV file or user-defined target recall set[vcf] as the ground truth set. | NULL    |
-| sv_freq            | Specify a high frequency variation threshold for the population to detect. | NULL    |
+| sv_freq            | Specify a high frequency variation threshold for the population to detect.It doesn't need if target_set doesn't have the attribute of AF. | 1.0    |
 | user_defined       | The target recall set[vcf] is user-defined.                  | False   |
 | pctsize            | Min pct allele size similarity between high_freq_file SV set and call set. | 0,9     |
 | ref_dist           | Max reference location distance between high_freq_file SV set and call set. | 1000    |

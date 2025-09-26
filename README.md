@@ -5,7 +5,7 @@
 **cuteSV-OL requires miniconda to create the runtime environment**
 
 ```bash
-git clone https://github.com/120L022331/cuteSV-OL.git && cd cuteSV-OL && conda env create -f environment.yml -n <your_env_name> && python setup.py build_ext --inplace && python setup.py install
+git clone https://github.com/gwmHIT/cuteSV-OL.git && cd cuteSV-OL && conda env create -f environment.yml -n <your_env_name> && python setup.py build_ext --inplace && python setup.py install
 ```
 
 **you can also use conda to install**

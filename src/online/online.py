@@ -461,7 +461,7 @@ def main_function():
     while True:  # 防止对空的sigs文件夹进行聚类
         time.sleep(interval)  # 
         if time_out == False:
-            if time.time() - event_handler.last_event_time > args.monitor_fade or shared_value == True:
+            if time.time() - event_handler.last_event_time > args.monitor_fade or shared_value.value:
                 time_out = True
                 with open(task_list_path,"a") as f:
                     f.write(f"end observer at {time.time()}\n")

@@ -1,13 +1,24 @@
 # coding=utf-8
 
-from setuptools import setup, find_packages
+from setuptools import setup, find_packages, Extension
 from Cython.Build import cythonize
 
 with open('README.md') as f:
     readme = f.read()
 
 # 使用 Cython 构建所有 .pyx 文件
-cython_extensions = cythonize("src/cuteSV/*.pyx")
+cython_extensions = cythonize([
+    Extension(
+        "cuteSV.genotype_improve",                  # 模块名：包名.文件名
+        ["src/cuteSV/genotype_improve.pyx"],        # 对应的 pyx 源文件
+        extra_compile_args=["-std=c99"],            # 关键：开启 C99
+    ),
+    Extension(
+        "cuteSV.prove_func",
+        ["src/cuteSV/prove_func.pyx"],
+        extra_compile_args=["-std=c99"],
+    ),
+])
 
 setup(
     name = "cuteSV-OL",
@@ -15,17 +26,17 @@ setup(
     description = "cuteSV-OL: a real-time structural variation detection framework for nanopore sequencing devices",
     author = "Guo Weimin",
     author_email = "tjiang@hit.edu.cn",
-    url = "https://github.com/120L022331/cuteSV-OL",
+    url = "https://github.com/gwmHIT/cuteSV-OL",
     license = "MIT",
     packages = find_packages("src"),
     package_dir = {"": "src"},
     package_data={
-        "online": ["bin/pandepth"],  # 打包C工具
+        "online": ["bin/*", "test/*"],
     },
     data_files = [("", ["LICENSE"])],
     entry_points={
         'console_scripts': [
-            'cuteSV=cuteSV.cuteSV:main',
+            'cuteSV_RT=cuteSV.cuteSV:main',
             'cuteSV_ONLINE=online.online:main_function',
         ],
     },

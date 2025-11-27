@@ -57,7 +57,7 @@ def parseArgs(argv):
 		help = "high frequence SV file or user-defined recall set[vcf]",
         default = "")
     parser.add_argument('--user_defined',
-        action = 'store_true',
+        action='store_true',
         help = 'The recall set[vcf] is user-defined')
     parser.add_argument('--sv_freq', 
 		type = float, 
@@ -83,6 +83,13 @@ def parseArgs(argv):
 		type = int, 
 		help = "Real-time results are generated every batch_interval batches",
         default = 4)
+    parser.add_argument('--workers_num', 
+		type = int, 
+		help = "The numbers of workers.",
+        default = 1)
+    parser.add_argument('--multi_sample',
+        action='store_true',
+        help = 'multiple sample mode.')
     args = parser.parse_args(argv)
     return args
 
@@ -157,7 +164,7 @@ def generate_mmi(reference_path, mmi_path):
 
 def cutesv_extract_sigs(work_dir, fa_path, bam_path, bam_name, thread, task_dir):
     while True:
-        command = f'cuteSV --input {bam_path} --reference {fa_path} --work_dir {work_dir} --bam_name {bam_name} --threads {thread} --mode 1'
+        command = f'cuteSV_RT --input {bam_path} --reference {fa_path} --work_dir {work_dir} --bam_name {bam_name} --threads {thread} --mode 1'
         try:
             subprocess.run(command, shell=True, check=True)
             break
@@ -199,7 +206,7 @@ def cutesv_combine_cluster(work_dir, vcf_output, thread, reference, high_freq_fi
     cutesv_work_dir = work_dir + "cutesv_work_dir"
     detect_rate = 0
     vcf_path = f'{vcf_output}{total_sum:.1f}_output.vcf'
-    command = f'cuteSV --retain_work_dir --write_old_sigs --genotype --output {vcf_path} --reference {reference} --work_dir {cutesv_work_dir} --threads {thread} --min_support {min_support} --mode 2'
+    command = f'cuteSV_RT --retain_work_dir --write_old_sigs --genotype --output {vcf_path} --reference {reference} --work_dir {cutesv_work_dir} --threads {thread} --min_support {min_support} --mode 2'
     while True:
         try:
             subprocess.run(command, shell=True, check=True)
@@ -222,7 +229,7 @@ def cutesv_combine_cluster(work_dir, vcf_output, thread, reference, high_freq_fi
 
 def worker(task_queue, fa_path, work_dir, fq_dir, platform, mmi_path, per_thread, shared_value, 
            batch_interval, high_freq_file, output_vcf, user_defined, pctsize, ref_dist, sv_freq, 
-           recall_file, target_rate, pandepth_path):
+           recall_file, target_rate, pandepth_path, workers_num):
     counter = 0
     do_flag = False
     while True:
@@ -377,8 +384,20 @@ def delete_signature_files(temp_dir, bam_name):
 
 def main_function():
     args = parseArgs(sys.argv[1:])
+    multi_script_path = pkg_resources.resource_filename("online", "test/multi_sample.sh")
+    if args.multi_sample:
+        subprocess.run([
+            "bash",
+            f"{multi_script_path}",
+            args.fastq_dir,
+            args.reference,
+            args.output_vcf,
+            args.work_dir
+        ], check=True)
+        sys.exit(0)
     if not args.work_dir.endswith('/'):
         args.work_dir += '/'
+
     task_queue = multiprocessing.Queue()
     args.high_freq_file = args.target_set
     if not os.path.exists(f'{args.work_dir}debug.txt'):
@@ -438,7 +457,8 @@ def main_function():
                                                         args.sv_freq, 
                                                         args.recall_file,
                                                         args.target_rate,
-                                                        pandepth_path))
+                                                        pandepth_path,
+                                                        args.workers_num))
     p.daemon = True
     p.start()
 
